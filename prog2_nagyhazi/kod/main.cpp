@@ -24,19 +24,13 @@ int main(int argc, char* argv[]) {
         }
         
         int N;
-        try {
-            N = std::stoi(argv[1]);
-            if( N <= 0 ) {
+        N = std::stoi(argv[1]);
+        if( N <= 0 )
             throw std::invalid_argument("nem létező emeletszámú ház");
-            }
-        }
-        catch ( const std::invalid_argument& ) { //ha már átalakítani sem sikerült
-            throw std::invalid_argument("nem egész számú emletszám");
-        }
 
         Toronyhaz toronyhaz(N);
         toronyhaz.startLift(); // azért így, és nem getLift(), mert az konstanst ad vissza
-                                // --> nem lehet módosítani a lift tagváltozóit
+                               // --> nem lehet módosítani a lift tagváltozóit
 
         while ( toronyhaz.getLift().getFloorsUp().size() > 0 || toronyhaz.getLift().getFloorsDown().size() > 0 ) {
             toronyhaz.displayLiftState();
@@ -44,6 +38,10 @@ int main(int argc, char* argv[]) {
         }
     }
     
+    catch ( const std::invalid_argument& i) { //ha már átalakítani sem sikerült
+        std::cerr << "hiba: " << i.what() << std::endl;
+    }
+
     catch (const std::exception& e) {
         std::cerr << "hiba: " << e.what() << std::endl;
     }
